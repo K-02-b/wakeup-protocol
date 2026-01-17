@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WakeUp Protocol - Stake Commitment</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="wallet-handler.js"></script>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo">WAKEUP</a>
+        <button class="btn-wallet" id="walletBtn" onclick="connectWallet()">CONNECT WALLET</button>
+    </header>
+
+    <div class="main-container">
+        <div class="stake-card">
+            <div class="dev-tag"><span>UNDER DEVELOPMENT</span></div>
+            <h1>COMMITMENT</h1>
+            <p style="text-align: center; font-size: 0.9rem; color: var(--light-grey); margin-bottom: 30px;">
+                Stake your <span class="highlight">SOL</span>. Prove your <span class="highlight">Will</span>.
+            </p>
+
+            <label class="section-label">Select Your Region</label>
+            <select class="input-group" id="timezoneSelect">
+                </select>
+
+            <label class="section-label">Wake-up Window (Strict)</label>
+            <select class="input-group" id="wakeTime">
+                <option value="06:30">06:30 AM (Early Bird)</option>
+                <option value="07:00" selected>07:00 AM (Standard)</option>
+            </select>
+
+            <label class="section-label">Amount to Stake (SOL)</label>
+            <div class="amount-grid">
+                <input type="radio" class="btn-check" name="solAmt" id="a1" value="0.01" checked>
+                <label class="amount-label" for="a1">0.01</label>
+
+                <input type="radio" class="btn-check" name="solAmt" id="a2" value="0.05">
+                <label class="amount-label" for="a2">0.05</label>
+
+                <input type="radio" class="btn-check" name="solAmt" id="a3" value="0.1">
+                <label class="amount-label" for="a3">0.1</label>
+
+                <input type="radio" class="btn-check" name="solAmt" id="a4" value="0.5">
+                <label class="amount-label" for="a4">0.5</label>
+            </div>
+
+            <button class="btn-submit" onclick="startStake()">Confirm Stake</button>
+
+            <div class="footer-info">
+                <i data-lucide="shield-check" size="12" style="vertical-align: middle;"></i>
+                Non-custodial smart contract. <br> 
+                Challenge failure results in <span class="highlight">Slashing</span>.
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="walletModal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="toggleModal()"><i data-lucide="x"></i></div>
+            <div class="modal-header">WALLET ACCOUNT</div>
+            <div class="modal-body">
+                <div class="address-label" id="modalAddress">Not Connected</div>
+                <div class="section-label">Current Balance</div>
+                <div class="balance-display"><span id="modalBalance">0.00</span> <span style="font-size: 0.9rem; color: var(--orange-primary);">SOL</span></div>
+            </div>
+            <button class="btn-disconnect" onclick="disconnectWallet()">DISCONNECT</button>
+        </div>
+    </div>
+    
+    <script>
+const tzSelect = document.getElementById('timezoneSelect');
+const zones = ["America/New_York", "America/Los_Angeles", "Asia/Tokyo", "Asia/Shanghai", "Asia/Dubai", "Europe/London"];
+const local = Intl.DateTimeFormat().resolvedOptions().timeZone;
+if(!zones.includes(local)) zones.unshift(local);
+zones.forEach(z => {
+    const op = document.createElement('option');
+    op.value = z; op.text = z;
+    if(z === local) op.selected = true;
+    tzSelect.appendChild(op);
+});
+
+function startStake() {
+    if(!walletKey) {
+        alert("Please connect wallet first.");
+        return;
+    }
+    const amt = document.querySelector('input[name="solAmt"]:checked').value;
+    alert(`COMMITTING...\nAmount: ${amt} SOL\nStatus: Under Development`);
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WakeUp Protocol - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="wallet-handler.js"></script>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">WAKEUP</a>
+        <button class="btn-wallet" id="walletBtn" onclick="connectWallet()">CONNECT WALLET</button>
+    </header>
+
+    <div class="container">
+        <h1 style="font-family:var(--font-display); color:var(--orange-primary); text-align:center;">WAKEUP PROTOCOL</h1>
+        
+        <div class="reward-box">
+            <div style="font-family:var(--font-display); font-size:0.8rem; margin-bottom:10px; color:var(--orange-primary)">INCENTIVE LAYER</div>
+            <div style="font-size:1.3rem; font-weight:bold;">WAKE UP = <span class="highlight">100% REFUND + $WAKE TOKENS</span></div>
+        </div>
+
+        <p style="text-align:center;">Proof of Discipline: <span class="highlight">Handwrite</span> the phrase below and upload.</p>
+        
+        <div class="challenge-phrase">"The Early Bird Catches The Solana Wormhole!"</div>
+
+        <div style="display:flex; gap:15px; justify-content:center; margin:30px 0;">
+            <label for="fileInput" class="btn-main" style="width:auto; padding:12px 30px; cursor:pointer;">VERIFY NOW</label>
+            <a href="stake.html" class="btn-outline">GO TO STAKE</a>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+        <div id="result" style="text-align:center;">
+            <img id="imagePreview" style="max-width:100%; border-radius:8px; display:none; margin:20px 0; border:1px solid #4a4a4a;">
+            <div id="status" style="font-family:var(--font-display); margin-top:10px;"></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="walletModal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="toggleModal()"><i data-lucide="x"></i></div>
+            <div class="modal-header">WALLET ACCOUNT</div>
+            <div class="modal-body">
+                <div class="address-label" id="modalAddress">Not Connected</div>
+                <div class="section-label">Current Balance</div>
+                <div class="balance-display"><span id="modalBalance">0.00</span> <span style="font-size: 0.9rem; color: var(--orange-primary);">SOL</span></div>
+            </div>
+            <button class="btn-disconnect" onclick="disconnectWallet()">DISCONNECT</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const preview = document.getElementById('imagePreview');
+            const status = document.getElementById('status');
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    status.innerText = "AI VERIFYING...";
+                    setTimeout(() => {
+                        status.innerText = "VERIFICATION SUCCESS ✅";
+                        status.style.color = "#4CAF50";
+                    }, 2000);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
